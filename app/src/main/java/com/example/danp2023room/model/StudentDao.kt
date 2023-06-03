@@ -5,8 +5,8 @@ import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.Query
 import androidx.room.Transaction
-import com.example.danp2023room.entities.StudentEntity
-import com.example.danp2023room.entities.StudentWithBooks
+import com.example.danp2023room.model.entities.StudentEntity
+import com.example.danp2023room.model.entities.StudentWithBooks
 
 @Dao
 interface StudentDao {

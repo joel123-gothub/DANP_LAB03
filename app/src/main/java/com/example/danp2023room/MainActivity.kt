@@ -16,17 +16,16 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import com.example.danp2023room.entities.BookEntity
-import com.example.danp2023room.entities.StudentEntity
+import com.example.danp2023room.model.entities.BookEntity
+import com.example.danp2023room.model.entities.StudentEntity
 import com.example.danp2023room.model.AppDatabase
 import com.example.danp2023room.model.Repository
+import com.example.danp2023room.model.entities.UnitEntity
 import com.example.danp2023room.ui.theme.DANP2023RoomTheme
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -86,6 +85,14 @@ fun RoomSample(repository: Repository) {
             }
         }
 
+        val unitsOnClick: () -> Unit = {
+            scope.launch {
+                repository.getAllUnits().forEach {
+                    Log.d(TAG, it.toString())
+                }
+            }
+        }
+
         val studentWithBooksOnClick: () -> Unit = {
             scope.launch {
                 repository.getStudentWithBooks() .forEach {
@@ -94,9 +101,25 @@ fun RoomSample(repository: Repository) {
             }
         }
 
+        val unitWithStudentOnClick: () -> Unit = {
+            scope.launch {
+                repository.getUnitWithStudent() .forEach {
+                    Log.d(TAG, it.toString())
+                }
+            }
+        }
+
+        val studentWithUnitOnClick: () -> Unit = {
+            scope.launch {
+                repository.getStudentWithUnit() .forEach {
+                    Log.d(TAG, it.toString())
+                }
+            }
+        }
+
         Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = fillDataOnClick) {
-            Text(text = "Fill student & book tables")
+            Text(text = "Fill student, book & unit tables")
         }
 
         Spacer(modifier = Modifier.height(10.dp))
@@ -110,8 +133,23 @@ fun RoomSample(repository: Repository) {
         }
 
         Spacer(modifier = Modifier.height(10.dp))
+        Button(onClick = unitsOnClick) {
+            Text(text = "Show units")
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
         Button(onClick = studentWithBooksOnClick) {
             Text(text = "Student With Books")
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(onClick = unitWithStudentOnClick) {
+            Text(text = "Units With Students")
+        }
+
+        Spacer(modifier = Modifier.height(10.dp))
+        Button(onClick = studentWithUnitOnClick) {
+            Text(text = "Student With Units")
         }
 
     }
@@ -135,10 +173,15 @@ fun fillTables(rep: Repository, scope: CoroutineScope) {
         val bookEntity = BookEntity(name = "Book " + i.toString(), studentId)
         scope.launch {
             rep.insertBook(bookEntity)
+
         }
-
     }
-
-
+    for (i in 0..20) {
+        val studentId = Random.nextInt(100, 120)
+        val unitEntity = UnitEntity(name = "Unit " + i.toString(), studentId)
+        scope.launch {
+            rep.insertUnits(unitEntity)
+        }
+    }
 }
 

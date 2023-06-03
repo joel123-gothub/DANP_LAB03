@@ -1,10 +1,24 @@
 package com.example.danp2023room.model
 
-import com.example.danp2023room.entities.BookEntity
-import com.example.danp2023room.entities.StudentEntity
-import com.example.danp2023room.entities.StudentWithBooks
+import com.example.danp2023room.model.entities.*
 
 class Repository(private val appDatabase: AppDatabase) {
+
+    suspend fun getAllUnits(): List<UnitEntity> {
+        return appDatabase.unitDao().getAll()
+    }
+
+    suspend fun getUnitWithStudent(): List<UnitWithStudent> {
+        return appDatabase.unitDao().getUnitWithStudent()
+    }
+
+    suspend fun getStudentWithUnit(): List<StudentWithUnit> {
+        return appDatabase.unitDao().getStudentWithUnit()
+    }
+
+    suspend fun insertUnits(unitEntity: UnitEntity) {
+        appDatabase.unitDao().insert(unitEntity)
+    }
 
     suspend fun getAllStudents(): List<StudentEntity> {
         return appDatabase.studentDao().getAll()
